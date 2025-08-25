@@ -1,0 +1,8 @@
+猝死预警模型 正负样本 6.7 ：1
+Best MulticlassAUROC: 0.750  Best MulticlassF1Score: 0.572   Best MulticlassAccuracy: 0.873  v1
+Best MulticlassAUROC: 0.753   Best MulticlassF1Score: 0.570  Best MulticlassAccuracy: 0.875  v2
+心电预训练模型
+消融实验进行
+
+1.5 747
+2.0 748

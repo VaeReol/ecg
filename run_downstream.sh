@@ -78,7 +78,7 @@ function set_options()
 }
 
 # default
-MASTER_PORT=12345
+MASTER_PORT=23469
 GPUS="0"
 
 # parsing

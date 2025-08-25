@@ -13,22 +13,22 @@
 import argparse
 import datetime
 import json
+import math
 import os
 import time
-
+import torch.nn as nn
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import yaml
 from torch.utils.tensorboard import SummaryWriter
-
-import models
+from new_model import LitEEGPT
 import util.misc as misc
 from engine_pretrain import train_one_epoch
 from util.dataset import build_dataset, get_dataloader
 from util.misc import NativeScalerWithGradNormCount as NativeScaler
 from util.optimizer import get_optimizer_from_config
-
+from torch.utils.data import ConcatDataset
 
 def parse() -> dict:
     parser = argparse.ArgumentParser('ECG self-supervised pre-training')
@@ -66,6 +66,34 @@ def parse() -> dict:
             config[k] = v
 
     return config
+def get_config(embed_dim=512, embed_num=1, depth=[8,6,6], num_heads=4): # 23977441
+    
+    models_configs = {
+            'encoder': {
+                    'embed_dim': embed_dim,
+                    'embed_num': embed_num,
+                    'depth': depth[0],
+                    'num_heads': num_heads,
+                },
+            'predictor': {
+                    'embed_dim': embed_dim,
+                    'embed_num': embed_num,
+                    'predictor_embed_dim': embed_dim,
+                    'depth': depth[1],
+                    'num_heads': num_heads,
+                },
+            'reconstructor': {
+                    'embed_dim': embed_dim,
+                    'embed_num': embed_num,
+                    'reconstructor_embed_dim': embed_dim,
+                    'depth': depth[2],
+                    'num_heads': num_heads,
+                },
+    }
+    return models_configs
+
+def count_parameters(model: nn.Module):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
 def main(config):
@@ -82,9 +110,24 @@ def main(config):
     np.random.seed(seed)
 
     cudnn.benchmark = True
+    # config2 = {
+    #     'index_dir': '/ssd1/stmem',
+    #     'fs': 250,
+    #     'filename_col': 'FILE_NAME',
+    #     'fs_col': 'SAMPLE_RATE',
+    #     'lead': '12lead',
+    #     'ecg_dir': '/ssd1/stmem/train_data',
+    #     'train_csv': 'index.csv'
 
+    # }
     # ECG dataset
-    dataset_train = build_dataset(config['dataset'], split='train')
+    # dataset_train_mimic = build_dataset(config['dataset_mimic'], split='train')
+    dataset_train_code15 =  build_dataset(config['dataset_code15'], split='train')
+    dataset_train_ningbo =  build_dataset(config['dataset_ningbo'], split='train')
+    # 预训练数据集构建，包括：重采样、滤波、归一化、cutoff
+    print(f'ningbo的数量为{len(dataset_train_ningbo)}')
+    print(f'code15的数量为{len(dataset_train_code15)}')
+    dataset_train = ConcatDataset([dataset_train_ningbo, dataset_train_code15])
     data_loader_train = get_dataloader(dataset_train,
                                        is_distributed=config['ddp']['distributed'],
                                        mode='train',
@@ -97,13 +140,11 @@ def main(config):
     else:
         output_dir = None
         log_writer = None
-
+    
     # define the model
-    model_name = config['model_name']
-    if model_name in models.__dict__:
-        model = models.__dict__[model_name](**config['model'])
-    else:
-        raise ValueError(f'Unsupported model name: {model_name}')
+    model_configs = get_config()
+    model = LitEEGPT(models_configs=model_configs)
+    total_params = count_parameters(model)
     model.to(device)
 
     model_without_ddp = model
@@ -127,10 +168,12 @@ def main(config):
     optimizer = get_optimizer_from_config(config['train'], model_without_ddp)
     print(optimizer)
     loss_scaler = NativeScaler()
-
+    max_epochs = config['train']['epochs']
+    devices_num = config['num_device']
+    steps_per_epoch = math.ceil(len(data_loader_train)/devices_num)
     misc.load_model(config, model_without_ddp, optimizer, loss_scaler)
-
     print(f"Start training for {config['train']['epochs']} epochs")
+    print(f"Total trainable parameters: {total_params}")
     start_time = time.time()
     for epoch in range(config['start_epoch'], config['train']['epochs']):
         if config['ddp']['distributed']:
@@ -142,6 +185,8 @@ def main(config):
                                       epoch,
                                       loss_scaler,
                                       log_writer,
+                                      max_epochs,
+                                      steps_per_epoch,
                                       config['train'])
         if output_dir and (epoch % 20 == 0 or epoch + 1 == config['train']['epochs']):
             misc.save_model(config,

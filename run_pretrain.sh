@@ -73,8 +73,8 @@ function set_options()
 }
 
 # default
-MASTER_PORT=12345
-GPUS="0"
+MASTER_PORT=12377
+GPUS="3,4,6,7"
 
 # parsing
 set_options "$@"
@@ -124,7 +124,7 @@ fi
 
 echo "Run main..."
 if [ $NUM_GPUS -gt 1 ]; then
-    torchrun $TORCHRUN_ARGS main_pretrain.py $MAIN_ARGS
+    torchrun $TORCHRUN_ARGS main_pretrain_con.py $MAIN_ARGS
 else
-    python main_pretrain.py $MAIN_ARGS
+    python main_pretrain_con.py $MAIN_ARGS
 fi

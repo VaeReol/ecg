@@ -1,0 +1,54 @@
+创新点：
+1.添加特定于导联的几个模块，在序列前后加入两个[SEP]可训练参数 加入一个lead-wise可训练的参数。
+2.最后用共享的解码器重建不同导联的mask部分
+ECG-JEPA: Learning General Representation of 12-Lead Electrocardiogram With a Joint-Embedding Predictive Architecture
+
+132208条code15预训练 ptbxl 五分类 {"train_lr": 0.0014974395425184485, "train_loss": 0.46384478882811536, "valid_loss": 0.5572160544823657, "MulticlassAccuracy": 0.8091323971748352, "MulticlassF1Score": 0.6335854530334473, "MulticlassAUROC": 0.925054669380188, "epoch": 7}
+
+
+原始stmem模型参数量:88502753
+第一版模型: mask参数 4 0.5 0.5
+mimic预训练 
+{"MulticlassAccuracy": 0.800000011920929, "MulticlassF1Score": 0.6496310234069824, "MulticlassAUROC": 0.9320120811462402, "epoch": 27}
+epoch 400:0.920
+epoch 420:0.928
+embed_num=4,
+embed_dim=256,
+depth=8,
+num_heads=4,
+Total trainable parameters: 19200331
+第二版模型：
+embed_dim=512, embed_num=1, depth=[6,6,6], num_heads=8
+Total trainable parameters: 57625163
+440epoch微调:
+{"MulticlassAccuracy": 0.7981734871864319, "MulticlassF1Score": 0.6734093427658081, "MulticlassAUROC": 0.9311453104019165, "epoch": 26}
+最好:0.934 lr:2.0e-4 单卡
+最好:0.932 lr:4.0e-4 单卡
+第三版模型：
+code15+ningbo+chapman
+embed_num=4,
+embed_dim=256,
+depth=8,
+num_heads=4,
+lr=2.0e-4 50epoch 3warmup
+{"MulticlassAccuracy": 0.8106544613838196, "MulticlassF1Score": 0.66319340467453, "MulticlassAUROC": 0.9403666257858276, "epoch": 18}
+第四版模型
+code15+ningbo+chapman
+auc:0.937
+mask参数 4 0.5 0.8
+embed_num=4,
+embed_dim=256,
+depth=4,
+num_heads=4,
+第五版模型: v4
+code15+ningbo+chapman
+auc:0.940
+mask参数 4 0.5 0.8
+embed_num=4,
+embed_dim=256,
+depth=10,
+num_heads=4,
+第六版模型:v6
+code15+ningbo+chapman
+auc:0.941
+embed_dim=512, embed_num=1, depth=[8,6,6], num_heads=4

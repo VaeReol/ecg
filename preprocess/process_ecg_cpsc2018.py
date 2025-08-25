@@ -22,15 +22,17 @@ def get_parser():
                         '--input_dir',
                         type=str,
                         required=True,
+                        default='/ssd1/stmem/origin_data/physionet.org/content/challenge-2021/1.0.3/training/cpsc_2018',
                         help="Path to the WFDB ECG database directory.")
     parser.add_argument('-o',
                         '--output_dir',
                         type=str,
                         required=True,
+                        default='/ssd1/stmem/cpsc2018/data',
                         help="Path to the directory where the preprocessed signals will be saved.")
     parser.add_argument('--index_path',
                         type=str,
-                        default="./index.csv",
+                        default="/ssd1/stmem/cpsc2018/index.csv",
                         help="Path to the index file.")
     args = parser.parse_args()
     return args
@@ -92,7 +94,7 @@ def run(args):
                 continue
             pd.to_pickle(cropped_signal.astype(np.float32),
                          os.path.join(save_dir, f"{record_name}_{idx}.pkl"))
-            index_df.loc[num_saved] = [f"{record_rel_path}_{idx}.pkl",
+            index_df.loc[num_saved] = [f"{record_name}_{idx}.pkl",
                                        f"{record_name}_{idx}.pkl",
                                        fs,
                                        source_name]

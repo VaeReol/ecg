@@ -1,9 +1,9 @@
 seed: 0
-output_dir: ./st_mem
+output_dir: ./st_mem/con+rec_v3
 exp_name: finetune
 resume: null
 start_epoch: 0
-encoder_path: ./st_mem/pretrain/encoder.pth
+encoder_path: /home/zehaoqin/ST-MEM/st_mem/new_model/pretrain/mimic/pretrain/encoder.pth
 model_name: st_mem_vit_base
 mode: finetune
 device: cuda
@@ -11,16 +11,16 @@ device: cuda
 ddp:
   world_size: 1
   rank: -1
-  gpu: 0
+  gpu: 3
   dist_url: env://
   dist_backend: nccl
-  distributed: false
+  distributed: True
 
 model:
   seq_len: 2250
   patch_size: 75
   num_leads: 12
-  num_classes: 3
+  num_classes: 5
 
 dataset:
   filename_col: FILE_NAME
@@ -29,15 +29,21 @@ dataset:
   label_dtype: long
   lead: 12lead
   fs: 250
-  index_dir: ./data/dummy
-  ecg_dir: ./data/dummy/ecgs
+  # index_dir: /ssd1/stmem/processed_cpsc
+  # ecg_dir: /ssd1/stmem/processed_cpsc/ecg
+  # ptbxl
+  # index_dir: /home/zehaoqin/ST-MEM/dataset/ptbxl/processed
+  # ecg_dir: /home/zehaoqin/ST-MEM/dataset/ptbxldata
+  # 猝死
+  index_dir: /ssd1/qinzehao/cusi/6.10ecg/train
+  ecg_dir: /ssd1/qinzehao/cusi/6.10ecg/train
 
-  train_csv: index.csv
-  valid_csv: index.csv
-  test_csv: index.csv
+  train_csv: train_index.csv
+  valid_csv: val_index.csv
+  test_csv: test_index.csv
 
   rand_augment:
-    use: true
+    use: False
     kwargs:
       op_names:
       - shift
@@ -76,16 +82,16 @@ dataset:
       axis: [-1, -2]
 
 dataloader:
-  batch_size: 16
+  batch_size: 128
   num_workers: 8
   pin_memory: True
 
 train:
-  epochs: 10
+  epochs: 20
   accum_iter: 1
-  warmup_epochs: 3
+  warmup_epochs: 0
   min_lr: 0
-  blr: 1.0e-3
+  blr: 2.0e-4
   lr: null
   weight_decay: 0.05
   dist_eval: false
@@ -93,13 +99,15 @@ train:
   optimizer: adamw
 
 loss:
-  name: cross_entropy
+# cross_entropy bce
+  name: bce
 
 metric:
-  task: multiclass
+  # task: multiclass
+  task: binary
   compute_on_cpu: true
   sync_on_compute: false
-  num_classes: 3
+  num_classes: 9
   target_metrics:
   - Accuracy
   - F1Score:
@@ -109,3 +117,4 @@ metric:
 
 test:
   target_metric: loss
+# MulticlassAUROC

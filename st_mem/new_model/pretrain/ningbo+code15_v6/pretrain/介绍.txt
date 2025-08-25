@@ -1,0 +1,2 @@
+这是没有频域loss的模型 
+def get_config(embed_dim=512, embed_num=1, depth=[8,6,6], num_heads=4)

@@ -1,0 +1,11 @@
+此为修改mask策略实验
+def make_masks(self, num_patchs, mC_x=4, p_n_y=0.5, p_c_y=0.2):
+def get_config(embed_dim=512, embed_num=1, depth=[8,6,6], num_heads=4): # 23977441
+cpsc2018
+100epoch MulticlassAccuracy: 0.852  MulticlassF1Score: 0.826  MulticlassAUROC: 0.978
+120epoch MulticlassAccuracy: 0.837  MulticlassF1Score: 0.794  MulticlassAUROC: 0.974
+140epoch MulticlassAccuracy: 0.857  MulticlassF1Score: 0.829  MulticlassAUROC: 0.977
+160epoch MulticlassAccuracy: 0.869  MulticlassF1Score: 0.840  MulticlassAUROC: 0.979
+180epoch MulticlassAccuracy: 0.862  MulticlassF1Score: 0.840  MulticlassAUROC: 0.978
+200epoch MulticlassAccuracy: 0.860  MulticlassF1Score: 0.835  MulticlassAUROC: 0.978 
+v6 mask参数不同时 MulticlassAccuracy: 0.834  MulticlassF1Score: 0.802  MulticlassAUROC: 0.975 cpsc2018

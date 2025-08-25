@@ -1,0 +1,7 @@
+ptbxl 验证集
+1 lead: Best MulticlassAccuracy: 0.695 Best MulticlassF1Score: 0.479  Best MulticlassAUROC: 0.824 
+6 lead: Best MulticlassAccuracy: 0.771 Best MulticlassF1Score: 0.607  Best MulticlassAUROC: 0.903
+
+cpsc2018 测试集
+6 lead:  Best MulticlassAccuracy: 0.810   Best MulticlassF1Score: 0.788    Best MulticlassAUROC: 0.963 
+1 lead:  Best MulticlassAccuracy: 0.720   Best MulticlassF1Score: 0.693    Best MulticlassAUROC: 0.939 

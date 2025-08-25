@@ -1,0 +1,26 @@
+160epoch train 100epoch finetune warmup 3epoch bs 128
+MulticlassAccuracy: 0.830  MulticlassF1Score: 0.803  MulticlassAUROC: 0.972 loss: 0.536
+160epoch train 20epoch finetune warmup 3epoch bs 128
+MulticlassAccuracy: 0.838  MulticlassF1Score: 0.813  MulticlassAUROC: 0.970
+160epoch train 30epoch finetune warmup 3epoch bs 128
+MulticlassAccuracy: 0.848  MulticlassF1Score: 0.821  MulticlassAUROC: 0.975
+160epoch train 40epoch finetune warmup 3epoch bs 128
+MulticlassAccuracy: 0.868  MulticlassF1Score: 0.838  MulticlassAUROC: 0.977
+160epoch train 50epoch finetune warmup 3epoch bs 128
+MulticlassAccuracy: 0.833  MulticlassF1Score: 0.802  MulticlassAUROC: 0.972
+160epoch train 60epoch finetune warmup 3epoch bs 128
+MulticlassAccuracy: 0.856  MulticlassF1Score: 0.832  MulticlassAUROC: 0.976
+
+160epoch train 40epoch finetune warmup 0epoch bs 128
+MulticlassAccuracy: 0.865  MulticlassF1Score: 0.837  MulticlassAUROC: 0.979
+去掉latent loss后的结果
+MulticlassAccuracy: 0.853  MulticlassF1Score: 0.821  MulticlassAUROC: 0.977
+
+160epoch train 40epoch finetune warmup 0epoch bs 256
+MulticlassAccuracy: 0.850  MulticlassF1Score: 0.819  MulticlassAUROC: 0.979
+160epoch train 40epoch finetune warmup 0epoch bs 128 lr 1e-4
+MulticlassAccuracy: 0.841  MulticlassF1Score: 0.805  MulticlassAUROC: 0.973
+160epoch train 40epoch finetune warmup 0epoch bs 128 lr 1.5e-4
+MulticlassAccuracy: 0.850  MulticlassF1Score: 0.814  MulticlassAUROC: 0.977
+160epoch train 40epoch finetune warmup 0epoch bs 128 lr 2.5e-4
+MulticlassAccuracy: 0.855  MulticlassF1Score: 0.825  MulticlassAUROC: 0.977

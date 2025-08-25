@@ -1,0 +1,52 @@
+160 epoch  MulticlassAccuracy: 0.715  MulticlassF1Score: 0.652  MulticlassAUROC: 0.938
+
+140 epoch  MulticlassAccuracy: 0.713  MulticlassF1Score: 0.650  MulticlassAUROC: 0.938
+
+120 epoch  MulticlassAccuracy: 0.699  MulticlassF1Score: 0.633  MulticlassAUROC: 0.934
+
+100 epoch  MulticlassAccuracy: 0.693  MulticlassF1Score: 0.631  MulticlassAUROC: 0.927
+
+80 epoch   MulticlassAccuracy: 0.687  MulticlassF1Score: 0.611  MulticlassAUROC: 0.925
+
+最终encoder MulticlassAccuracy: 0.717  MulticlassF1Score: 0.656  MulticlassAUROC: 0.939
+
+def get_config(embed_dim=512, embed_num=1, depth=[8,6,6], num_heads=4)
+================================================================================================================
+def get_config(embed_dim=256, embed_num=1, depth=[10,8,8], num_heads=4)  21303883
+40epoch  MulticlassAccuracy: 0.762  MulticlassF1Score: 0.710  MulticlassAUROC: 0.951
+100epoch MulticlassAccuracy: 0.768  MulticlassF1Score: 0.711  MulticlassAUROC: 0.952
+180epoch MulticlassAccuracy: 0.778  MulticlassF1Score: 0.728  MulticlassAUROC: 0.961
+最终encoder MulticlassAccuracy: 0.779  MulticlassF1Score: 0.732  MulticlassAUROC: 0.961
+================================================================================================================
+def get_config(embed_dim=256, embed_num=1, depth=[12,10,10], num_heads=8)  26042443
+100epoch MulticlassAccuracy: 0.764  MulticlassF1Score: 0.714  MulticlassAUROC: 0.952
+160epoch MulticlassAccuracy: 0.772  MulticlassF1Score: 0.730  MulticlassAUROC: 0.953
+180epoch MulticlassAccuracy: 0.766  MulticlassF1Score: 0.722  MulticlassAUROC: 0.953
+================================================================================================================
+def get_config(embed_dim=256, embed_num=1, depth=[8,8,8], num_heads=4)  19724363
+140epoch MulticlassAccuracy: 0.774  MulticlassF1Score: 0.726  MulticlassAUROC: 0.956
+180epoch MulticlassAccuracy: 0.783  MulticlassF1Score: 0.736  MulticlassAUROC: 0.957
+================================================================================================================
+974 805 837  60epoch
+975 819 852  40epoch
+974 802 839  20epoch
+================================================================================================================
+0.5 con_loss + rec_loss   v5
+972 817 847  20epoch + 35 epoch
+973 820 850  20epoch + 40 epoch
+975 818 850  20epoch + 45 epoch
+976 817 850  20epoch + 50 epoch
+972 805 846  20epoch + 55 epoch
+977 827 862  40epoch + 50 epoch
+================================================================================================================
+0.3 con_loss + rec_loss   v6
+978 828 854 30epoch + 50epoch
+================================================================================================================
+0.1 con_loss + rec_loss   v7
+975 819 852 50epoch + 70epoch
+975 812 845 30epoch + 50epoch
+================================================================================================================
+
+
+20 ecg
+30 ecg2
